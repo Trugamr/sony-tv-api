@@ -1,0 +1,15 @@
+{
+  "name": "sony-tv-api",
+  "license": "MIT",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts"
+  },
+  "devDependencies": {
+    "tsup": "^6.5.0",
+    "typescript": "4.9.4"
+  }
+}
