@@ -2,14 +2,21 @@
   "name": "sony-tv-api",
   "license": "MIT",
   "version": "0.0.1",
-  "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "tsup src/index.ts --format esm --dts",
+    "lint": "eslint . --ext .ts",
     "format": "prettier --write ."
   },
+  "dependencies": {
+    "ky": "^0.33.2",
+    "ky-universal": "^0.11.0"
+  },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "eslint": "^8.32.0",
     "prettier": "^2.8.3",
     "tsup": "^6.5.0",
     "typescript": "4.9.4"
