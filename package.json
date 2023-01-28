@@ -6,9 +6,11 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts"
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "format": "prettier --write ."
   },
   "devDependencies": {
+    "prettier": "^2.8.3",
     "tsup": "^6.5.0",
     "typescript": "4.9.4"
   }
