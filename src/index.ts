@@ -70,6 +70,18 @@ export class SonyTvApi {
       .json<GetRemoteControllerInfoResult>()
   }
 
+  async sendIrccCommand(command: IrccCommandOrCode) {
+    const code = await this.#getCodeFromIrccCommand(command)
+    const xml = this.#getIrccXmlBody({ code })
+    // @TODO: Fix response error even if ircc command works
+    return this.#client.post('sony/ircc', {
+      headers: {
+        SOAPACTION: '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"',
+      },
+      body: xml,
+    })
+  }
+
   #getJsonBody({
     id = this.#id,
     method,
@@ -80,16 +92,14 @@ export class SonyTvApi {
   }
 
   #getIrccXmlBody({ code }: GetIrccXmlBodyOptions) {
-    return `
-      <?xml version="1.0"?>
-      <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
-          <s:Body>
-              <u:X_SendIRCC xmlns:u="urn:schemas-sony-com:service:IRCC:1">
-                  <IRCCCode>${code}</IRCCCode>
-              </u:X_SendIRCC>
-          </s:Body>
-      </s:Envelope>
-    `
+    return `<?xml version="1.0"?>
+    <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+        <s:Body>
+            <u:X_SendIRCC xmlns:u="urn:schemas-sony-com:service:IRCC:1">
+                <IRCCCode>${code}</IRCCCode>
+            </u:X_SendIRCC>
+        </s:Body>
+    </s:Envelope>`
   }
 
   #isIrccCommand(value: string): value is keyof typeof IrccCommand {
