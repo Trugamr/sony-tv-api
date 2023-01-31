@@ -1,6 +1,6 @@
 export type SonyTvApiOptions = {
   psk?: string
-  host: string | URL
+  host: string
 }
 
 type Result<T> = {
@@ -27,10 +27,6 @@ export type GetCurrentTimeResult = Result<[string]>
 
 // @TODO: Find out values for "status"
 export type GetPowerStatusResult = Result<[{ status: 'active' | 'standby' }]>
-
-export type SetPowerStatusOptions = {
-  status: boolean
-}
 
 export type SetPowerStatusResult = Result<[]>
 

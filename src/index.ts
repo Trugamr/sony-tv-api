@@ -1,11 +1,10 @@
-import ky from 'ky-universal'
-import type { KyInstance } from 'ky/distribution/types/ky'
+import { Headers, ofetch } from 'ofetch'
+import type { $Fetch } from 'ofetch'
 import {
   SonyTvApiOptions,
   GetCurrentTimeResult,
   GetJsonBodyOptions,
   GetPowerStatusResult,
-  SetPowerStatusOptions,
   SetPowerStatusResult,
   GetRemoteControllerInfoResult,
   GetIrccXmlBodyOptions,
@@ -19,66 +18,61 @@ import { IRCC_CODE_REGEX } from './constants'
 export class SonyTvApi {
   #id = 1
   #psk?: string
-  #client: KyInstance
+  #client: $Fetch
 
   constructor({ psk, host }: SonyTvApiOptions) {
     this.#psk = psk
-    this.#client = ky.create({
-      prefixUrl: host,
-      hooks: {
-        beforeRequest: [
-          request => {
-            // Add pre shared key to headers before every request
-            if (this.#psk) {
-              request.headers.set('X-AUTH-PSK', this.#psk)
-            }
-            return request
-          },
-        ],
+    this.#client = ofetch.create({
+      baseURL: host,
+      onRequest: ({ options }) => {
+        options.headers = new Headers(options.headers)
+        if (this.#psk) {
+          options.headers.set('X-AUTH-PSK', this.#psk)
+        }
       },
     })
   }
 
-  async getCurrentTime() {
-    const json = this.#getJsonBody({ method: 'getCurrentTime' })
-    return this.#client
-      .post('sony/system', { json })
-      .json<GetCurrentTimeResult>()
-  }
-
-  async getPowerStatus() {
-    const json = this.#getJsonBody({ method: 'getPowerStatus' })
-    return this.#client
-      .post('sony/system', { json })
-      .json<GetPowerStatusResult>()
-  }
-
-  async setPowerStatus({ status }: SetPowerStatusOptions) {
-    const json = this.#getJsonBody({
-      method: 'setPowerStatus',
-      params: [{ status }],
+  getCurrentTime() {
+    return this.#client<GetCurrentTimeResult>('/sony/system', {
+      method: 'POST',
+      body: this.#getJsonBody({ method: 'getCurrentTime' }),
     })
-    return this.#client
-      .post('sony/system', { json })
-      .json<SetPowerStatusResult>()
   }
 
-  async getRemoteControllerInfo() {
-    const json = this.#getJsonBody({ method: 'getRemoteControllerInfo' })
-    return this.#client
-      .post('sony/system', { json })
-      .json<GetRemoteControllerInfoResult>()
+  getPowerStatus() {
+    return this.#client<GetPowerStatusResult>('/sony/system', {
+      method: 'POST',
+      body: this.#getJsonBody({ method: 'getPowerStatus' }),
+    })
+  }
+
+  setPowerStatus(status: boolean) {
+    return this.#client<SetPowerStatusResult>('/sony/system', {
+      method: 'POST',
+      body: this.#getJsonBody({
+        method: 'setPowerStatus',
+        params: [{ status }],
+      }),
+    })
+  }
+
+  getRemoteControllerInfo() {
+    return this.#client<GetRemoteControllerInfoResult>('/sony/system', {
+      method: 'POST',
+      body: this.#getJsonBody({ method: 'getRemoteControllerInfo' }),
+    })
   }
 
   async sendIrccCommand(command: IrccCommandOrCode) {
     const code = await this.#getCodeFromIrccCommand(command)
-    const xml = this.#getIrccXmlBody({ code })
     // @TODO: Fix response error even if ircc command works
-    return this.#client.post('sony/ircc', {
+    return this.#client('/sony/ircc', {
+      method: 'POST',
       headers: {
         SOAPACTION: '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"',
       },
-      body: xml,
+      body: this.#getIrccXmlBody({ code }),
     })
   }
 
