@@ -101,6 +101,7 @@ export class SonyTvApi {
   }
 
   async #getCodeFromIrccCommand(value: IrccCommandOrCode): Promise<string> {
+    // If named command present in enum return code for it
     if (this.#isIrccCommand(value)) {
       return IrccCommand[value]
     }
@@ -108,7 +109,16 @@ export class SonyTvApi {
     if (IRCC_CODE_REGEX.test(value)) {
       return value
     }
-    // @TODO: Get commands from api and try to find code for specified command
+    // Try to find command using remote controller info method
+    const {
+      result: [, commands],
+    } = await this.getRemoteControllerInfo()
+
+    const command = commands.find(command => command.name === value)
+    if (command) {
+      return command.value
+    }
+
     return value
   }
 }
