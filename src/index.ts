@@ -10,6 +10,9 @@ import {
   GetIrccXmlBodyOptions,
   IrccCommandOrCode,
   IrccCommand,
+  GetApplicationListResult,
+  SetActiveAppOptions,
+  SetActiveAppResult,
 } from './types'
 import { IRCC_CODE_REGEX } from './constants'
 
@@ -73,6 +76,20 @@ export class SonyTvApi {
         SOAPACTION: '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"',
       },
       body: this.#getIrccXmlBody({ code }),
+    })
+  }
+
+  getApplicationList() {
+    return this.#client<GetApplicationListResult>('/sony/appControl', {
+      method: 'POST',
+      body: this.#getJsonBody({ method: 'getApplicationList' }),
+    })
+  }
+
+  setActiveApp(options: SetActiveAppOptions) {
+    return this.#client<SetActiveAppResult>('/sony/appControl', {
+      method: 'POST',
+      body: this.#getJsonBody({ method: 'setActiveApp', params: [options] }),
     })
   }
 

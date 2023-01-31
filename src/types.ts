@@ -15,6 +15,8 @@ export type GetJsonBodyOptions = {
     | 'getPowerStatus'
     | 'setPowerStatus'
     | 'getRemoteControllerInfo'
+    | 'getApplicationList'
+    | 'setActiveApp'
   version?: string
   params?: unknown[]
 }
@@ -110,3 +112,14 @@ export type IrccCommandOrCode =
   | IrccCommand
   | keyof typeof IrccCommand
   | AnyString
+
+export type GetApplicationListResult = Result<
+  [Array<{ title: string; uri: string; icon: string }>]
+>
+
+export type SetActiveAppOptions = {
+  uri: string
+  data?: string
+}
+
+export type SetActiveAppResult = Result<[]>
