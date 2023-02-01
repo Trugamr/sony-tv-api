@@ -13,6 +13,8 @@ import {
   GetApplicationListResult,
   SetActiveAppOptions,
   SetActiveAppResult,
+  GetVolumeInformationResult,
+  SetAudioMuteResult,
 } from './types'
 import { IRCC_CODE_REGEX } from './constants'
 
@@ -90,6 +92,20 @@ export class SonyTvApi {
     return this.#client<SetActiveAppResult>('/sony/appControl', {
       method: 'POST',
       body: this.#getJsonBody({ method: 'setActiveApp', params: [options] }),
+    })
+  }
+
+  getVolumeInformation() {
+    return this.#client<GetVolumeInformationResult>('/sony/audio', {
+      method: 'POST',
+      body: this.#getJsonBody({ method: 'getVolumeInformation' }),
+    })
+  }
+
+  setAudioMute(status: boolean) {
+    return this.#client<SetAudioMuteResult>('/sony/audio', {
+      method: 'POST',
+      body: this.#getJsonBody({ method: 'setAudioMute', params: [{ status }] }),
     })
   }
 

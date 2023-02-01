@@ -17,6 +17,8 @@ export type GetJsonBodyOptions = {
     | 'getRemoteControllerInfo'
     | 'getApplicationList'
     | 'setActiveApp'
+    | 'getVolumeInformation'
+    | 'setAudioMute'
   version?: string
   params?: unknown[]
 }
@@ -123,3 +125,17 @@ export type SetActiveAppOptions = {
 }
 
 export type SetActiveAppResult = Result<[]>
+
+export type GetVolumeInformationResult = Result<
+  [
+    Array<{
+      target: string
+      volume: number
+      mute: number
+      maxVolume: number
+      minVolume: number
+    }>,
+  ]
+>
+
+export type SetAudioMuteResult = Result<[0]>
