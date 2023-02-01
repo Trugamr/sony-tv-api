@@ -15,6 +15,8 @@ import {
   SetActiveAppResult,
   GetVolumeInformationResult,
   SetAudioMuteResult,
+  SetAudioVolumeOptions,
+  SetAudioVolumeResult,
 } from './types'
 import { IRCC_CODE_REGEX } from './constants'
 
@@ -106,6 +108,16 @@ export class SonyTvApi {
     return this.#client<SetAudioMuteResult>('/sony/audio', {
       method: 'POST',
       body: this.#getJsonBody({ method: 'setAudioMute', params: [{ status }] }),
+    })
+  }
+
+  setAudioVolume({ target, volume }: SetAudioVolumeOptions) {
+    return this.#client<SetAudioVolumeResult>('/sony/audio', {
+      method: 'POST',
+      body: this.#getJsonBody({
+        method: 'setAudioVolume',
+        params: [{ target, volume }],
+      }),
     })
   }
 

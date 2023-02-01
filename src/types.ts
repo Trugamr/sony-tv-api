@@ -19,6 +19,7 @@ export type GetJsonBodyOptions = {
     | 'setActiveApp'
     | 'getVolumeInformation'
     | 'setAudioMute'
+    | 'setAudioVolume'
   version?: string
   params?: unknown[]
 }
@@ -138,4 +139,11 @@ export type GetVolumeInformationResult = Result<
   ]
 >
 
-export type SetAudioMuteResult = Result<[0]>
+export type SetAudioMuteResult = Result<[number]>
+
+export type SetAudioVolumeOptions = {
+  target: string
+  volume: string
+}
+
+export type SetAudioVolumeResult = Result<[number]>
