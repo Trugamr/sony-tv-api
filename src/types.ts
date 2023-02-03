@@ -15,11 +15,14 @@ export type GetJsonBodyOptions = {
     | 'getPowerStatus'
     | 'setPowerStatus'
     | 'getRemoteControllerInfo'
+    | 'getInterfaceInformation'
+    | 'getNetworkSettings'
     | 'getApplicationList'
     | 'setActiveApp'
     | 'getVolumeInformation'
     | 'setAudioMute'
     | 'setAudioVolume'
+    | 'requestReboot'
   version?: string
   params?: unknown[]
 }
@@ -37,6 +40,26 @@ export type SetPowerStatusResult = Result<[]>
 
 export type GetRemoteControllerInfoResult = Result<
   [{ bundled: boolean; type: string }, Array<{ name: string; value: string }>]
+>
+
+export type GetNetworkSettingsOptions = {
+  netif: 'eth0' | 'wlan0' | AnyString
+}
+
+export type GetNetworkSettingsResult = Result<
+  | undefined
+  | []
+  | [
+      {
+        netif: string
+        hwAddr: string
+        ipAddrV4: string
+        ipAddrV6: string
+        netmask: string
+        gateway: string
+        dns: Array<string | null>
+      },
+    ]
 >
 
 export enum IrccCommand {
@@ -115,6 +138,18 @@ export type IrccCommandOrCode =
   | IrccCommand
   | keyof typeof IrccCommand
   | AnyString
+
+export type GetInterfaceInformationResult = Result<
+  [
+    {
+      productCategory: string
+      productName: string
+      modelName: string
+      serverName: string
+      interfaceVersion: string
+    },
+  ]
+>
 
 export type GetApplicationListResult = Result<
   [Array<{ title: string; uri: string; icon: string }>]

@@ -10,6 +10,9 @@ import {
   GetIrccXmlBodyOptions,
   IrccCommandOrCode,
   IrccCommand,
+  GetInterfaceInformationResult,
+  GetNetworkSettingsOptions,
+  GetNetworkSettingsResult,
   GetApplicationListResult,
   SetActiveAppOptions,
   SetActiveAppResult,
@@ -80,6 +83,32 @@ export class SonyTvApi {
         SOAPACTION: '"urn:schemas-sony-com:service:IRCC:1#X_SendIRCC"',
       },
       body: this.#getIrccXmlBody({ code }),
+    })
+  }
+
+  getInterfaceInformation() {
+    return this.#client<GetInterfaceInformationResult>('/sony/system', {
+      method: 'POST',
+      body: this.#getJsonBody({
+        method: 'getInterfaceInformation',
+      }),
+    })
+  }
+
+  getNetworkSettings({ netif }: GetNetworkSettingsOptions) {
+    return this.#client<GetNetworkSettingsResult>('/sony/system', {
+      method: 'POST',
+      body: this.#getJsonBody({
+        method: 'getNetworkSettings',
+        params: [{ netif }],
+      }),
+    })
+  }
+
+  requestReboot() {
+    return this.#client('/sony/system', {
+      method: 'POST',
+      body: this.#getJsonBody({ method: 'requestReboot' }),
     })
   }
 
