@@ -20,6 +20,7 @@ import {
   SetAudioMuteResult,
   SetAudioVolumeOptions,
   SetAudioVolumeResult,
+  GetSchemeListResult,
 } from './types'
 import { IRCC_CODE_REGEX } from './constants'
 
@@ -147,6 +148,13 @@ export class SonyTvApi {
         method: 'setAudioVolume',
         params: [{ target, volume }],
       }),
+    })
+  }
+
+  getSchemeList() {
+    return this.#client<GetSchemeListResult>('/sony/avContent', {
+      method: 'POST',
+      body: this.#getJsonBody({ method: 'getSchemeList' }),
     })
   }
 

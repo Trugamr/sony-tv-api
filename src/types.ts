@@ -23,6 +23,7 @@ export type GetJsonBodyOptions = {
     | 'setAudioMute'
     | 'setAudioVolume'
     | 'requestReboot'
+    | 'getSchemeList'
   version?: string
   params?: unknown[]
 }
@@ -182,3 +183,11 @@ export type SetAudioVolumeOptions = {
 }
 
 export type SetAudioVolumeResult = Result<[number]>
+
+export type GetSchemeListResult = Result<
+  [
+    Array<{
+      scheme: 'extInput'
+    }>,
+  ]
+>
