@@ -11,14 +11,14 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "ofetch": "^1.0.0"
+    "ofetch": "^1.0.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
-    "@typescript-eslint/parser": "^5.49.0",
-    "eslint": "^8.32.0",
-    "prettier": "^2.8.3",
-    "tsup": "^6.5.0",
-    "typescript": "4.9.4"
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "eslint": "^8.34.0",
+    "prettier": "^2.8.4",
+    "tsup": "^6.6.3",
+    "typescript": "4.9.5"
   }
 }
