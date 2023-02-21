@@ -24,6 +24,9 @@ export type GetJsonBodyOptions = {
     | 'setAudioVolume'
     | 'requestReboot'
     | 'getSchemeList'
+    | 'getSourceList'
+    | 'getContentCount'
+    | 'getContentList'
   version?: string
   params?: unknown[]
 }
@@ -189,5 +192,66 @@ export type GetSchemeListResult = Result<
     Array<{
       scheme: 'extInput'
     }>,
+  ]
+>
+
+export type GetSourceListOptions = {
+  scheme: string
+}
+
+export type GetSourceListResult = Result<
+  [
+    Array<{
+      source: string
+    }>,
+  ]
+>
+
+export type GetContentCountOptions = {
+  source: string
+  type?: string
+}
+
+export type GetContentCountResult = Result<
+  [
+    {
+      count: number
+    },
+  ]
+>
+
+export type GetContentListOptions = {
+  source: string
+  stIdx?: number
+  cnt?: number
+  type?: string
+}
+
+export type GetContentListResult = Result<
+  [
+    Array<
+      | {
+          uri: string
+          title: string
+          index: number
+        }
+      | {
+          uri: string
+          title: string
+          index: number
+          dispNum: string
+          originalDispNum: string
+          tripletStr: string
+          programNum: number
+          programMediaType: string
+          directRemoteNum: number
+          startDateTime: string
+          durationSec: number
+          channelName: string
+          fileSizeByte: number
+          isProtected: boolean
+          isAlreadyPlayed: boolean
+        }
+    >,
   ]
 >

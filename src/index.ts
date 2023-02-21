@@ -21,6 +21,12 @@ import {
   SetAudioVolumeOptions,
   SetAudioVolumeResult,
   GetSchemeListResult,
+  GetSourceListOptions,
+  GetSourceListResult,
+  GetContentCountOptions,
+  GetContentCountResult,
+  GetContentListOptions,
+  GetContentListResult,
 } from './types'
 import { IRCC_CODE_REGEX } from './constants'
 
@@ -155,6 +161,36 @@ export class SonyTvApi {
     return this.#client<GetSchemeListResult>('/sony/avContent', {
       method: 'POST',
       body: this.#getJsonBody({ method: 'getSchemeList' }),
+    })
+  }
+
+  getSourceList({ scheme }: GetSourceListOptions) {
+    return this.#client<GetSourceListResult>('/sony/avContent', {
+      method: 'POST',
+      body: this.#getJsonBody({
+        method: 'getSourceList',
+        params: [{ scheme }],
+      }),
+    })
+  }
+
+  getContentCount({ source, type }: GetContentCountOptions) {
+    return this.#client<GetContentCountResult>('/sony/avContent', {
+      method: 'POST',
+      body: this.#getJsonBody({
+        method: 'getContentCount',
+        params: [{ source, type }],
+      }),
+    })
+  }
+
+  getContentList({ source, stIdx, cnt, type }: GetContentListOptions) {
+    return this.#client<GetContentListResult>('/sony/avContent', {
+      method: 'POST',
+      body: this.#getJsonBody({
+        method: 'getContentList',
+        params: [{ source, stIdx, cnt, type }],
+      }),
     })
   }
 
