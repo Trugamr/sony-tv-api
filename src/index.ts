@@ -27,6 +27,9 @@ import {
   GetContentCountResult,
   GetContentListOptions,
   GetContentListResult,
+  SetPlayContentOptions,
+  SetPlayContentResult,
+  GetCurrentExternalInputsStatusResult,
 } from './types'
 import { IRCC_CODE_REGEX } from './constants'
 
@@ -192,6 +195,28 @@ export class SonyTvApi {
         params: [{ source, stIdx, cnt, type }],
       }),
     })
+  }
+
+  setPlayContent({ uri }: SetPlayContentOptions) {
+    return this.#client<SetPlayContentResult>('/sony/avContent', {
+      method: 'POST',
+      body: this.#getJsonBody({
+        method: 'setPlayContent',
+        params: [{ uri }],
+      }),
+    })
+  }
+
+  getCurrentExternalInputsStatus() {
+    return this.#client<GetCurrentExternalInputsStatusResult>(
+      '/sony/avContent',
+      {
+        method: 'POST',
+        body: this.#getJsonBody({
+          method: 'getCurrentExternalInputsStatus',
+        }),
+      },
+    )
   }
 
   #getJsonBody({

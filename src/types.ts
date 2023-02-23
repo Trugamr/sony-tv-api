@@ -27,6 +27,8 @@ export type GetJsonBodyOptions = {
     | 'getSourceList'
     | 'getContentCount'
     | 'getContentList'
+    | 'setPlayContent'
+    | 'getCurrentExternalInputsStatus'
   version?: string
   params?: unknown[]
 }
@@ -253,5 +255,24 @@ export type GetContentListResult = Result<
           isAlreadyPlayed: boolean
         }
     >,
+  ]
+>
+
+export type SetPlayContentOptions = {
+  uri: string
+}
+
+export type SetPlayContentResult = Result<[]>
+
+export type GetCurrentExternalInputsStatusResult = Result<
+  [
+    Array<{
+      uri: string
+      title: string
+      connection: boolean
+      connectionNotSupported: boolean
+      label: string
+      icon: string
+    }>,
   ]
 >
